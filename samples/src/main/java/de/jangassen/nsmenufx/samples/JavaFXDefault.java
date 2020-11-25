@@ -19,9 +19,6 @@ public class JavaFXDefault extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		MenuToolkit tk = MenuToolkit.toolkit(Locale.getDefault());
-		tk.setApplicationMenu(tk.createDefaultApplicationMenu("test"));
-
-		tk.setDocIconMenu(new Menu());
 
 		MenuBar menuBar = new MenuBar();
 		menuBar.useSystemMenuBarProperty().set(true);
@@ -36,5 +33,7 @@ public class JavaFXDefault extends Application {
 		primaryStage.setScene(new Scene(new Pane(menuBar)));
 		primaryStage.setTitle("Test");
 		primaryStage.show();
+
+		tk.setApplicationMenu(tk.createDefaultApplicationMenu("test"));
 	}
 }

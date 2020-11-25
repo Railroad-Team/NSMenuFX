@@ -1,5 +1,6 @@
 package de.jangassen.platform.mac;
 
+import de.jangassen.exception.LifecycleException;
 import de.jangassen.jfa.JavaToObjc;
 import de.jangassen.jfa.ObjcToJava;
 import de.jangassen.jfa.appkit.*;
@@ -28,6 +29,10 @@ public class MacNativeAdapter implements NativeAdapter {
 
   public void setApplicationMenu(Menu menu) {
     NSMenu nsMenu = sharedApplication.mainMenu();
+    if(nsMenu == null || nsMenu.numberOfItems() == 0) {
+      throw new LifecycleException("Native menu not yet initialised");
+    }
+
     NSMenuItem mainMenu = NSMenuItem.alloc().initWithTitle("", null, "");
     mainMenu.setSubmenu(MenuConverter.convert(menu));
 

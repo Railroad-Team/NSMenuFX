@@ -35,21 +35,37 @@ public class MenuItemConverter {
   }
 
   private static NSMenuItem convertMenuItem(MenuItem menuItem) {
-    FoundationCallback foundationCallback = getFoundationCallback(menuItem);
+    FoundationCallback foundationCallback = getFoundationCallback(menuItem.getOnAction());
 
     NSMenuItem nsMenuItem = createNsMenuItem(menuItem, foundationCallback);
-    menuItem.textProperty().addListener((observable, oldValue, newValue) -> {
-      if (!newValue.equals(oldValue)) {
-        nsMenuItem.setTitle(newValue);
-      }
-    });
+    menuItem.textProperty().addListener((observable, oldValue, newValue) ->
+        nsMenuItem.setTitle(newValue)
+    );
+
+    menuItem.onActionProperty().addListener((observable, oldValue, newValue) ->
+            updateAction(menuItem, nsMenuItem, newValue)
+    );
+
+    menuItem.acceleratorProperty().addListener((observable, oldValue, newValue) ->
+            nsMenuItem.setKeyEquivalent(toKeyEquivalentString(newValue))
+    );
 
     NSCleaner.register(menuItem, nsMenuItem);
+    registerCallbackForCleanup(menuItem, foundationCallback);
+    return nsMenuItem;
+  }
+
+  private static void updateAction(MenuItem menuItem, NSMenuItem nsMenuItem, EventHandler<ActionEvent> eventHandler) {
+    FoundationCallback foundationCallback = getFoundationCallback(eventHandler);
+    nsMenuItem.setTarget(foundationCallback.getTarget());
+    nsMenuItem.setAction(foundationCallback.getSelector());
+    registerCallbackForCleanup(menuItem, foundationCallback);
+  }
+
+  private static void registerCallbackForCleanup(MenuItem menuItem, FoundationCallback foundationCallback) {
     if (foundationCallback != VOID_CALLBACK) {
       NSCleaner.register(menuItem, foundationCallback);
     }
-
-    return nsMenuItem;
   }
 
   private static NSMenuItem createNsMenuItem(MenuItem menuItem, FoundationCallback foundationCallback) {
@@ -60,12 +76,11 @@ public class MenuItemConverter {
     return nsMenuItem;
   }
 
-  private static FoundationCallback getFoundationCallback(MenuItem menuItem) {
-    EventHandler<ActionEvent> onAction = menuItem.getOnAction();
-    if (onAction == null) {
+  private static FoundationCallback getFoundationCallback(EventHandler<ActionEvent> action) {
+    if (action == null) {
       return VOID_CALLBACK;
     }
-    return FoundationCallbackRegistry.registerCallback(id -> onAction.handle(new ActionEvent()));
+    return FoundationCallbackRegistry.registerCallback(id -> action.handle(new ActionEvent()));
   }
 
   private static String toKeyEquivalentString(KeyCombination accelerator) {
