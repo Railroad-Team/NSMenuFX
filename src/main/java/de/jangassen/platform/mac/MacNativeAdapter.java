@@ -6,6 +6,7 @@ import de.jangassen.jfa.ObjcToJava;
 import de.jangassen.jfa.appkit.*;
 import de.jangassen.jfa.foundation.Foundation;
 import de.jangassen.jfa.foundation.ID;
+import de.jangassen.listener.FirstWindowShowingEventListener;
 import de.jangassen.platform.NativeAdapter;
 import de.jangassen.platform.mac.convert.MenuConverter;
 import javafx.application.Platform;
@@ -18,6 +19,8 @@ public class MacNativeAdapter implements NativeAdapter {
 
   private boolean forceQuitOnCmdQ = true;
 
+  private FirstWindowShowingEventListener firstWindowShowingEventListener = null;
+
   public MacNativeAdapter() {
     sharedApplication = NSApplication.sharedApplication();
     sharedWorkspace = NSWorkspace.sharedWorkspace();
@@ -29,15 +32,27 @@ public class MacNativeAdapter implements NativeAdapter {
 
   public void setApplicationMenu(Menu menu) {
     NSMenu nsMenu = sharedApplication.mainMenu();
-    if(nsMenu == null || nsMenu.numberOfItems() == 0) {
-      throw new LifecycleException("Native menu not yet initialised");
+    if (nsMenu == null || nsMenu.numberOfItems() == 0) {
+      setApplicationMenuWhenAvailable(menu);
+    } else {
+      NSMenuItem mainMenu = NSMenuItem.alloc().initWithTitle("", null, "");
+      mainMenu.setSubmenu(MenuConverter.convert(menu));
+
+      nsMenu.removeItemAtIndex(0);
+      nsMenu.insertItem(mainMenu, 0);
+    }
+  }
+
+  private void setApplicationMenuWhenAvailable(Menu menu) {
+    if (firstWindowShowingEventListener == null) {
+      firstWindowShowingEventListener = new FirstWindowShowingEventListener();
     }
 
-    NSMenuItem mainMenu = NSMenuItem.alloc().initWithTitle("", null, "");
-    mainMenu.setSubmenu(MenuConverter.convert(menu));
-
-    nsMenu.removeItemAtIndex(0);
-    nsMenu.insertItem(mainMenu, 0);
+    if (!firstWindowShowingEventListener.isCompleted()) {
+      firstWindowShowingEventListener.setAction(() -> setApplicationMenu(menu));
+    } else {
+      throw new LifecycleException("Application menu is not initialized");
+    }
   }
 
   public void hide() {
