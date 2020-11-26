@@ -27,7 +27,7 @@
         <dependency>
             <groupId>de.jangassen</groupId>
             <artifactId>nsmenufx</artifactId>
-            <version>3.0.0-SNAPSHOT</version>
+            <version>3.0.0-BETA2</version>
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
