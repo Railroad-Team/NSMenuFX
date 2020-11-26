@@ -16,7 +16,10 @@ public class ContextMenu extends Application {
     Menu context = new Menu();
     MenuItem menuItem = new MenuItem("Item1");
     menuItem.setOnAction(e -> System.out.println("Clicked"));
-    context.getItems().addAll(menuItem, new MenuItem("item2"));
+
+    Menu subMenu = new Menu("Submenu");
+    subMenu.getItems().add(new MenuItem("Item 2"));
+    context.getItems().addAll(menuItem, subMenu);
 
     stage.setTitle("Right click me");
 
