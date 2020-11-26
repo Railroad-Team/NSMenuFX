@@ -29,17 +29,18 @@ further dependencies.
 ## Maven
 
 Add the following lines to the dependencies in your `pom.xml`
-
-	<dependency>
-    	<groupId>de.jangassen</groupId>
-    	<artifactId>nsmenufx</artifactId>
-    	<version>2.1.8</version>
-    </dependency>
+```xml
+<dependency>
+    <groupId>de.jangassen</groupId>
+    <artifactId>nsmenufx</artifactId>
+    <version>3.0.0-BETA2</version>
+</dependency>
+```
 ## Gradle
 
 Add the following line to the dependencies in your `build.gradle`
 
-	compile "de.jangassen:nsmenufx:2.1.8"
+	compile "de.jangassen:nsmenufx:3.0.0-BETA2"
 
 ## Usage Examples
 
