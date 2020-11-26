@@ -20,6 +20,7 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
@@ -151,6 +152,10 @@ public class MenuToolkit {
 
   public void setDocIconMenu(Menu menu) {
     nativeAdapter.setDocIconMenu(menu);
+  }
+
+  public void showContextMenu(Menu menu, MouseEvent event) {
+    nativeAdapter.showContextMenu(menu, event);
   }
 
   public void setGlobalMenuBar(MenuBar menuBar) {

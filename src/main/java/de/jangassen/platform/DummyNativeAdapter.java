@@ -1,7 +1,9 @@
 package de.jangassen.platform;
 
 import javafx.application.Platform;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Menu;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 
@@ -46,5 +48,13 @@ public class DummyNativeAdapter implements NativeAdapter {
   @Override
   public void setForceQuitOnCmdQ(boolean forceQuit) {
     // Only supported on macOS
+  }
+
+  public void showContextMenu(Menu menu, MouseEvent event) {
+    Window.getWindows().stream().filter(Window::isFocused).findFirst().ifPresent(window -> {
+      ContextMenu contextMenu = new ContextMenu();
+      contextMenu.getItems().addAll(menu.getItems());
+      contextMenu.show(window, event.getScreenX(), event.getScreenY());
+    });
   }
 }

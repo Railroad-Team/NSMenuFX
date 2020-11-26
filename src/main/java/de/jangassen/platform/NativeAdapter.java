@@ -1,6 +1,7 @@
 package de.jangassen.platform;
 
 import javafx.scene.control.Menu;
+import javafx.scene.input.MouseEvent;
 
 public interface NativeAdapter {
   void setApplicationMenu(Menu menu);
@@ -16,4 +17,6 @@ public interface NativeAdapter {
   void quit();
 
   void setForceQuitOnCmdQ(boolean forceQuit);
+
+  void showContextMenu(Menu menu, MouseEvent event);
 }

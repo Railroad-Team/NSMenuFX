@@ -11,6 +11,9 @@ import de.jangassen.platform.NativeAdapter;
 import de.jangassen.platform.mac.convert.MenuConverter;
 import javafx.application.Platform;
 import javafx.scene.control.Menu;
+import javafx.scene.input.MouseEvent;
+
+import java.util.Optional;
 
 public class MacNativeAdapter implements NativeAdapter {
 
@@ -75,6 +78,17 @@ public class MacNativeAdapter implements NativeAdapter {
 
   public void setForceQuitOnCmdQ(boolean forceQuit) {
     this.forceQuitOnCmdQ = forceQuit;
+  }
+
+  @Override
+  public void showContextMenu(Menu menu, MouseEvent event) {
+    Optional.ofNullable(sharedApplication.keyWindow()).map(NSWindow::contentView).ifPresent(view -> {
+      NSMenu nsMenu = MenuConverter.convert(menu);
+      NSPoint nsPoint = new NSPoint();
+      nsPoint.x = new Foundation.CGFloat(event.getSceneX());
+      nsPoint.y = new Foundation.CGFloat(event.getSceneY());
+      nsMenu.popUpMenuPositioningItem(null, nsPoint, view);
+    });
   }
 
   public void setDocIconMenu(Menu menu) {
