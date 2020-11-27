@@ -39,7 +39,7 @@ public class MenuItemConverter {
 
     NSMenuItem nsMenuItem = createNsMenuItem(menuItem, foundationCallback);
     menuItem.textProperty().addListener((observable, oldValue, newValue) ->
-        nsMenuItem.setTitle(newValue)
+            nsMenuItem.setTitle(newValue)
     );
 
     menuItem.onActionProperty().addListener((observable, oldValue, newValue) ->
@@ -48,6 +48,11 @@ public class MenuItemConverter {
 
     menuItem.acceleratorProperty().addListener((observable, oldValue, newValue) ->
             nsMenuItem.setKeyEquivalent(toKeyEquivalentString(newValue))
+    );
+
+    ImageConverter.convert(menuItem.getGraphic()).ifPresent(nsMenuItem::setImage);
+    menuItem.graphicProperty().addListener((observable, oldValue, newValue) ->
+            ImageConverter.convert(newValue).ifPresent(nsMenuItem::setImage)
     );
 
     NSCleaner.register(menuItem, nsMenuItem);

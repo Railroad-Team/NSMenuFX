@@ -62,7 +62,7 @@ public class StandardMacApp extends Application {
 		Menu fileMenu = new Menu("File");
 		MenuItem newItem = new MenuItem("New...");
 		fileMenu.getItems().addAll(newItem, new SeparatorMenuItem(), tk.createCloseWindowMenuItem(),
-				new SeparatorMenuItem(), new MenuItem("TBD"));
+						new SeparatorMenuItem(), new MenuItem("TBD"));
 
 		// Edit (items TBD)
 		Menu editMenu = new Menu("Edit");
@@ -70,7 +70,9 @@ public class StandardMacApp extends Application {
 
 		// Format (items TBD)
 		Menu formatMenu = new Menu("Format");
-		formatMenu.getItems().addAll(new MenuItem("TBD"));
+		MenuItem menuItem = new MenuItem("TBD");
+		menuItem.setGraphic(new ImageView(new Image(resource.toString())));
+		formatMenu.getItems().addAll(menuItem);
 
 		// View Menu (items TBD)
 		Menu viewMenu = new Menu("View");
@@ -80,7 +82,7 @@ public class StandardMacApp extends Application {
 		// TBD standard window menu items
 		Menu windowMenu = new Menu("Window");
 		windowMenu.getItems().addAll(tk.createMinimizeMenuItem(), tk.createZoomMenuItem(), tk.createCycleWindowsItem(),
-				new SeparatorMenuItem(), tk.createBringAllToFrontItem());
+						new SeparatorMenuItem(), tk.createBringAllToFrontItem());
 
 		// Help Menu (items TBD)
 		Menu helpMenu = new Menu("Help");
