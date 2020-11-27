@@ -20,6 +20,14 @@
                     <target>11</target>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-maven-plugin</artifactId>
+                <version>0.0.5</version>
+                <configuration>
+                    <mainClass>nsmenufx_samples/de.jangassen.nsmenufx.samples.StandardMacApp</mainClass>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
