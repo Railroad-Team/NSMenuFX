@@ -50,6 +50,11 @@ public class DummyNativeAdapter implements NativeAdapter {
     // Only supported on macOS
   }
 
+  @Override
+  public void setTrayMenu(Menu menu) {
+    // Only supported on macOS
+  }
+
   public void showContextMenu(Menu menu, MouseEvent event) {
     Window.getWindows().stream().filter(Window::isFocused).findFirst().ifPresent(window -> {
       ContextMenu contextMenu = new ContextMenu();

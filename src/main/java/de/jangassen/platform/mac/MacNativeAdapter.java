@@ -8,6 +8,7 @@ import de.jangassen.jfa.foundation.Foundation;
 import de.jangassen.jfa.foundation.ID;
 import de.jangassen.listener.FirstWindowShowingEventListener;
 import de.jangassen.platform.NativeAdapter;
+import de.jangassen.platform.mac.convert.ImageConverter;
 import de.jangassen.platform.mac.convert.MenuConverter;
 import javafx.application.Platform;
 import javafx.scene.control.Menu;
@@ -23,6 +24,7 @@ public class MacNativeAdapter implements NativeAdapter {
   private boolean forceQuitOnCmdQ = true;
 
   private FirstWindowShowingEventListener firstWindowShowingEventListener = null;
+  protected NSStatusItem nsStatusItem;
 
   public MacNativeAdapter() {
     sharedApplication = NSApplication.sharedApplication();
@@ -78,6 +80,25 @@ public class MacNativeAdapter implements NativeAdapter {
 
   public void setForceQuitOnCmdQ(boolean forceQuit) {
     this.forceQuitOnCmdQ = forceQuit;
+  }
+
+  @Override
+  public void setTrayMenu(Menu menu) {
+    NSStatusBar nsStatusBar = NSStatusBar.systemStatusBar();
+    if (menu == null) {
+      if (nsStatusItem != null) {
+        nsStatusBar.removeStatusItem(nsStatusItem);
+        Foundation.cfRelease(ObjcToJava.toID(nsStatusBar));
+      }
+    } else {
+      nsStatusItem = nsStatusBar.statusItemWithLength(NSStatusBar.NSSquareStatusItemLength);
+      Foundation.cfRetain(ObjcToJava.toID(nsStatusItem));
+
+      ImageConverter.convert(menu.getGraphic()).ifPresent(nsStatusItem.button()::setImage);
+
+      NSMenu convertedMenu = MenuConverter.convert(menu);
+      nsStatusItem.setMenu(convertedMenu);
+    }
   }
 
   @Override

@@ -3,13 +3,13 @@ package de.jangassen.nsmenufx.samples;
 import de.jangassen.MenuToolkit;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.SeparatorMenuItem;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+
+import java.net.URL;
 
 /**
  * Skeleton for Standard Macintosh Application See:
@@ -24,6 +24,16 @@ public class StandardMacApp extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		MenuToolkit tk = MenuToolkit.toolkit();
+		URL resource = StandardMacApp.class.getClassLoader().getResource("baseline_menu_white_18dp.png");
+
+		Menu trayMenu = new Menu("Test");
+		trayMenu.setGraphic(new ImageView(new Image(resource.toString())));
+		MenuItem trayMenuItem = new MenuItem("Tray menu item");
+		trayMenu.getItems().add(trayMenuItem);
+
+		tk.setTrayMenu(trayMenu);
+
 		StackPane root = new StackPane();
 		Button button = new Button();
 		button.setText("Create new Stage");
@@ -35,7 +45,6 @@ public class StandardMacApp extends Application {
 		primaryStage.setTitle(mainWindowTitle);
 		primaryStage.show();
 
-		MenuToolkit tk = MenuToolkit.toolkit();
 
 		MenuBar bar = new MenuBar();
 

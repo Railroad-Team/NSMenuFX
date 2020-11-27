@@ -1,14 +1,14 @@
 package de.jangassen;
 
 import de.jangassen.dialogs.about.AboutStageBuilder;
-import de.jangassen.platform.NativeAdapterProvider;
-import de.jangassen.platform.NativeAdapter;
 import de.jangassen.icns.IcnsParser;
 import de.jangassen.icns.IcnsType;
 import de.jangassen.labels.LabelMaker;
 import de.jangassen.labels.LabelName;
 import de.jangassen.listener.MenuBarSyncListener;
 import de.jangassen.listener.WindowMenuUpdateListener;
+import de.jangassen.platform.NativeAdapter;
+import de.jangassen.platform.NativeAdapterProvider;
 import de.jangassen.util.MenuBarUtils;
 import de.jangassen.util.StageUtils;
 import javafx.scene.Parent;
@@ -152,6 +152,10 @@ public class MenuToolkit {
 
   public void setDocIconMenu(Menu menu) {
     nativeAdapter.setDocIconMenu(menu);
+  }
+
+  public void setTrayMenu(Menu menu) {
+    nativeAdapter.setTrayMenu(menu);
   }
 
   public void showContextMenu(Menu menu, MouseEvent event) {

@@ -19,4 +19,6 @@ public interface NativeAdapter {
   void setForceQuitOnCmdQ(boolean forceQuit);
 
   void showContextMenu(Menu menu, MouseEvent event);
+
+  void setTrayMenu(Menu menu);
 }
