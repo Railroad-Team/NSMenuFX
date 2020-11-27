@@ -47,31 +47,32 @@ Add the following line to the dependencies in your `build.gradle`
 The following snippet shows a simple example on how to change a menu item in
 the application menu:
 
-    // Get the toolkit
-    MenuToolkit tk = MenuToolkit.toolkit();
+````java`
+// Get the toolkit
+MenuToolkit tk = MenuToolkit.toolkit();
 
-    // Create the default Application menu
-	Menu defaultApplicationMenu = tk.createDefaultApplicationMenu("test");
+// Create the default Application menu
+Menu defaultApplicationMenu = tk.createDefaultApplicationMenu("test");
 
-	// Update the existing Application menu
-	tk.setApplicationMenu(defaultApplicationMenu);
+// Update the existing Application menu
+tk.setApplicationMenu(defaultApplicationMenu);
 
-	// Since we now have a reference to the menu, we can rename items
-	defaultApplicationMenu.getItems().get(1).setText("Hide all the otters");
-
+// Since we now have a reference to the menu, we can rename items
+defaultApplicationMenu.getItems().get(1).setText("Hide all the otters");
+``
 To set a global menu bar that is used for all stages:
+```java
+// Create a new menu bar
+MenuBar bar = new MenuBar();
 
-	// Create a new menu bar
-	MenuBar bar = new MenuBar();
+// Add the default application menu
+bar.getMenus().add(tk.createDefaultApplicationMenu("test"));
 
-	// Add the default application menu
-	bar.getMenus().add(tk.createDefaultApplicationMenu("test"));
+// Add some more Menus...
 
-	// Add some more Menus...
-
-	// Use the menu bar for all stages including new ones
-	tk.setGlobalMenuBar(bar);
-
+// Use the menu bar for all stages including new ones
+tk.setGlobalMenuBar(bar);
+```
 To find more usage examples, have a look into the test classes.
 
 ## Known issues
