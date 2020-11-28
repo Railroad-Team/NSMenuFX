@@ -7,18 +7,23 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.web.WebView;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
+import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Collection;
+import java.util.Collections;
 
 public class AboutStageBuilder {
 
   public static final String DEFAULT_APP_ICON =
-      "/System/Library/CoreServices/CoreTypes.bundle/Contents/Resources/GenericApplicationIcon.icns";
-  public static final int DEFAULT_ICON_SIZE = 80;
+          "/System/Library/CoreServices/CoreTypes.bundle/Contents/Resources/GenericApplicationIcon.icns";
+  public static final int DEFAULT_ICON_SIZE = 120;
 
   private final Stage stage;
   private Label version;
@@ -106,19 +111,19 @@ public class AboutStageBuilder {
 
     return this;
   }
-  
-  public AboutStageBuilder withHtml(String html) {
-    WebView creditsView = createWebview();
-    creditsView.getEngine().loadContent(html);
+
+  public AboutStageBuilder withText(String text) {
+    return withTexts(Collections.singleton(new Text(text)));
+  }
+
+  public AboutStageBuilder withTexts(Collection<Text> texts) {
+    TextFlow creditsView = new TextFlow();
+    creditsView.setBorder(Border.EMPTY);
+    creditsView.setTextAlignment(TextAlignment.CENTER);
+    creditsView.getChildren().addAll(texts);
     setCredits(creditsView);
 
     return this;
-  }
-
-  private WebView createWebview() {
-    WebView view = new WebView();
-    view.setPrefHeight(140);
-    return view;
   }
 
   private void setCredits(Node view) {
@@ -126,14 +131,6 @@ public class AboutStageBuilder {
     pane.setCenter(view);
     pane.getStyleClass().add("credits");
     this.credits = pane;
-  }
-
-  public AboutStageBuilder withUrl(String url) {
-    WebView creditsView = createWebview();
-    creditsView.getEngine().load(url);
-    setCredits(creditsView);
-
-    return this;
   }
 
   public AboutStageBuilder withCopyright(String copyright) {

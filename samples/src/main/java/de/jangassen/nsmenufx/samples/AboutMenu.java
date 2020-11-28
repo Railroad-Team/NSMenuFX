@@ -25,7 +25,7 @@ public class AboutMenu extends Application {
     MenuToolkit tk = MenuToolkit.toolkit();
 
     AboutStageBuilder aboutStageBuilder = AboutStageBuilder.start("About MyApp")
-        .withAppName("MyApp").withCloseOnFocusLoss().withHtml("<i>Some descriptive text</i>")
+            .withAppName("MyApp").withCloseOnFocusLoss().withText("Line 1\nLine2")
         .withVersionString("Version 1.0b").withCopyright("Copyright \u00A9 " + Calendar
             .getInstance().get(Calendar.YEAR));
 
