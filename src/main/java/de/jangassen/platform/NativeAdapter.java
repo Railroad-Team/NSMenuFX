@@ -1,5 +1,6 @@
 package de.jangassen.platform;
 
+import de.jangassen.model.AppearanceMode;
 import javafx.scene.control.Menu;
 import javafx.scene.input.MouseEvent;
 
@@ -21,4 +22,8 @@ public interface NativeAdapter {
   void showContextMenu(Menu menu, MouseEvent event);
 
   void setTrayMenu(Menu menu);
+
+  boolean systemUsesDarkMode();
+
+  void setAppearanceMode(AppearanceMode mode);
 }

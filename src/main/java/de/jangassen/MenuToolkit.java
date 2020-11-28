@@ -7,6 +7,7 @@ import de.jangassen.labels.LabelMaker;
 import de.jangassen.labels.LabelName;
 import de.jangassen.listener.MenuBarSyncListener;
 import de.jangassen.listener.WindowMenuUpdateListener;
+import de.jangassen.model.AppearanceMode;
 import de.jangassen.platform.NativeAdapter;
 import de.jangassen.platform.NativeAdapterProvider;
 import de.jangassen.util.MenuBarUtils;
@@ -160,6 +161,14 @@ public class MenuToolkit {
 
   public void showContextMenu(Menu menu, MouseEvent event) {
     nativeAdapter.showContextMenu(menu, event);
+  }
+
+  public boolean systemUsesDarkMode() {
+    return nativeAdapter.systemUsesDarkMode();
+  }
+
+  public void setAppearanceMode(AppearanceMode mode) {
+    nativeAdapter.setAppearanceMode(mode);
   }
 
   public void setGlobalMenuBar(MenuBar menuBar) {

@@ -1,5 +1,6 @@
 package de.jangassen.platform;
 
+import de.jangassen.model.AppearanceMode;
 import javafx.application.Platform;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Menu;
@@ -52,6 +53,16 @@ public class DummyNativeAdapter implements NativeAdapter {
 
   @Override
   public void setTrayMenu(Menu menu) {
+    // Only supported on macOS
+  }
+
+  @Override
+  public boolean systemUsesDarkMode() {
+    return false;
+  }
+
+  @Override
+  public void setAppearanceMode(AppearanceMode mode) {
     // Only supported on macOS
   }
 

@@ -7,6 +7,7 @@ import de.jangassen.jfa.appkit.*;
 import de.jangassen.jfa.foundation.Foundation;
 import de.jangassen.jfa.foundation.ID;
 import de.jangassen.listener.FirstWindowShowingEventListener;
+import de.jangassen.model.AppearanceMode;
 import de.jangassen.platform.NativeAdapter;
 import de.jangassen.platform.mac.convert.ImageConverter;
 import de.jangassen.platform.mac.convert.MenuConverter;
@@ -29,6 +30,7 @@ public class MacNativeAdapter implements NativeAdapter {
   public MacNativeAdapter() {
     sharedApplication = NSApplication.sharedApplication();
     sharedWorkspace = NSWorkspace.sharedWorkspace();
+
   }
 
   public static boolean isAvailable() {
@@ -45,6 +47,8 @@ public class MacNativeAdapter implements NativeAdapter {
 
       nsMenu.removeItemAtIndex(0);
       nsMenu.insertItem(mainMenu, 0);
+
+      sharedApplication.setAppearance(NSAppearance.appearanceNamed(NSAppearance.NSAppearanceName.NSAppearanceNameVibrantDark));
     }
   }
 
@@ -120,5 +124,30 @@ public class MacNativeAdapter implements NativeAdapter {
 
     ID mappedObject = JavaToObjc.map(foundationProxy);
     sharedApplication.setDelegate(ObjcToJava.map(mappedObject, NSApplicationDelegate.class));
+  }
+
+  @Override
+  public boolean systemUsesDarkMode() {
+    return "Dark".equals(NSUserDefaults.standardUserDefaults().objectForKey(NSUserDefaults.AppleInterfaceStyle));
+  }
+
+  @Override
+  public void setAppearanceMode(AppearanceMode mode) {
+    switch (mode) {
+      case AUTO:
+        NSAppearance.NSAppearanceName appearanceName = systemUsesDarkMode()
+                ? NSAppearance.NSAppearanceName.NSAppearanceNameVibrantDark
+                : NSAppearance.NSAppearanceName.NSAppearanceNameVibrantLight;
+        sharedApplication.setAppearance(NSAppearance.appearanceNamed(appearanceName));
+        break;
+      case DARK:
+        sharedApplication.setAppearance(NSAppearance.appearanceNamed(NSAppearance.NSAppearanceName.NSAppearanceNameVibrantDark));
+        break;
+      case LIGHT:
+        sharedApplication.setAppearance(NSAppearance.appearanceNamed(NSAppearance.NSAppearanceName.NSAppearanceNameVibrantLight));
+        break;
+      default:
+        throw new IllegalArgumentException();
+    }
   }
 }
