@@ -4,6 +4,7 @@ import de.jangassen.exception.LifecycleException;
 import de.jangassen.jfa.JavaToObjc;
 import de.jangassen.jfa.ObjcToJava;
 import de.jangassen.jfa.appkit.*;
+import de.jangassen.jfa.cleanup.NSCleaner;
 import de.jangassen.jfa.foundation.Foundation;
 import de.jangassen.jfa.foundation.ID;
 import de.jangassen.listener.FirstWindowShowingEventListener;
@@ -19,18 +20,33 @@ import java.util.Optional;
 
 public class MacNativeAdapter implements NativeAdapter {
 
+  private static MacNativeAdapter instance;
+
   private final NSApplication sharedApplication;
   private final NSWorkspace sharedWorkspace;
 
   private boolean forceQuitOnCmdQ = true;
 
-  private FirstWindowShowingEventListener firstWindowShowingEventListener = null;
-  protected NSStatusItem nsStatusItem;
+  // Keep references to prevent GC
+  private Menu applicationMenu;
+  private Menu trayMenu;
+  private Menu dockIconMenu;
+  private ApplicationDelegateWithMenu applicationDelegate;
 
-  public MacNativeAdapter() {
+  private NSStatusItem nsStatusItem;
+  private FirstWindowShowingEventListener firstWindowShowingEventListener = null;
+
+  private MacNativeAdapter() {
     sharedApplication = NSApplication.sharedApplication();
     sharedWorkspace = NSWorkspace.sharedWorkspace();
+  }
 
+  public static MacNativeAdapter getInstance() {
+    if (instance == null) {
+      instance = new MacNativeAdapter();
+    }
+
+    return instance;
   }
 
   public static boolean isAvailable() {
@@ -42,14 +58,19 @@ public class MacNativeAdapter implements NativeAdapter {
     if (nsMenu == null || nsMenu.numberOfItems() == 0) {
       setApplicationMenuWhenAvailable(menu);
     } else {
-      NSMenuItem mainMenu = NSMenuItem.alloc().initWithTitle("", null, "");
-      mainMenu.setSubmenu(MenuConverter.convert(menu));
-
-      nsMenu.removeItemAtIndex(0);
-      nsMenu.insertItem(mainMenu, 0);
-
-      sharedApplication.setAppearance(NSAppearance.appearanceNamed(NSAppearance.NSAppearanceName.NSAppearanceNameVibrantDark));
+      setApplicationMenuImmediately(menu, nsMenu);
     }
+  }
+
+  private void setApplicationMenuImmediately(Menu menu, NSMenu nsMenu) {
+    NSMenuItem mainMenu = NSMenuItem.alloc().initWithTitle("", null, "");
+    mainMenu.setSubmenu(MenuConverter.convert(menu));
+
+    nsMenu.removeItemAtIndex(0);
+    nsMenu.insertItem(mainMenu, 0);
+
+    sharedApplication.setAppearance(NSAppearance.appearanceNamed(NSAppearance.NSAppearanceName.NSAppearanceNameVibrantDark));
+    applicationMenu = menu;
   }
 
   private void setApplicationMenuWhenAvailable(Menu menu) {
@@ -89,20 +110,33 @@ public class MacNativeAdapter implements NativeAdapter {
   @Override
   public void setTrayMenu(Menu menu) {
     NSStatusBar nsStatusBar = NSStatusBar.systemStatusBar();
-    if (menu == null) {
-      if (nsStatusItem != null) {
-        nsStatusBar.removeStatusItem(nsStatusItem);
-        Foundation.cfRelease(ObjcToJava.toID(nsStatusBar));
+    if (menu != null) {
+      if (nsStatusItem == null) {
+        nsStatusItem = createNewTrayMenu(nsStatusBar);
       }
-    } else {
-      nsStatusItem = nsStatusBar.statusItemWithLength(NSStatusBar.NSSquareStatusItemLength);
-      Foundation.cfRetain(ObjcToJava.toID(nsStatusItem));
 
       ImageConverter.convert(menu.getGraphic()).ifPresent(nsStatusItem.button()::setImage);
-
       NSMenu convertedMenu = MenuConverter.convert(menu);
+
       nsStatusItem.setMenu(convertedMenu);
+      trayMenu = menu;
+    } else if (nsStatusItem != null) {
+      removeTrayMenu(nsStatusBar);
     }
+  }
+
+  private NSStatusItem createNewTrayMenu(NSStatusBar nsStatusBar) {
+    NSStatusItem statusItem = nsStatusBar.statusItemWithLength(NSStatusBar.NSSquareStatusItemLength);
+    ID statusItemId = ObjcToJava.toID(statusItem);
+    Foundation.cfRetain(statusItemId);
+    NSCleaner.register(statusItem, statusItemId);
+    return statusItem;
+  }
+
+  private void removeTrayMenu(NSStatusBar nsStatusBar) {
+    nsStatusBar.removeStatusItem(nsStatusItem);
+    Foundation.cfRelease(ObjcToJava.toID(nsStatusBar));
+    trayMenu = null;
   }
 
   @Override
@@ -117,13 +151,17 @@ public class MacNativeAdapter implements NativeAdapter {
   }
 
   public void setDocIconMenu(Menu menu) {
-    NSApplicationDelegate delegate = sharedApplication.delegate();
-    NSMenu convert = MenuConverter.convert(menu);
+    if (applicationDelegate == null) {
+      NSApplicationDelegate delegate = sharedApplication.delegate();
+      applicationDelegate = new ApplicationDelegateWithMenu(delegate);
 
-    ApplicationDelegateWithMenu foundationProxy = new ApplicationDelegateWithMenu(delegate, convert);
+      ID mappedObject = JavaToObjc.map(applicationDelegate);
+      sharedApplication.setDelegate(ObjcToJava.map(mappedObject, NSApplicationDelegate.class));
+    }
 
-    ID mappedObject = JavaToObjc.map(foundationProxy);
-    sharedApplication.setDelegate(ObjcToJava.map(mappedObject, NSApplicationDelegate.class));
+    NSMenu nsMenu = MenuConverter.convert(menu);
+    applicationDelegate.setMenu(nsMenu);
+    dockIconMenu = menu;
   }
 
   @Override

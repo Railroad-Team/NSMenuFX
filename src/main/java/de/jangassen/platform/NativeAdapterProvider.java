@@ -8,7 +8,7 @@ public class NativeAdapterProvider {
   public static NativeAdapter getNativeAdapter() {
     String os = System.getProperty("os.name");
     if (os.startsWith("Mac") && MacNativeAdapter.isAvailable()) {
-      return new MacNativeAdapter();
+      return MacNativeAdapter.getInstance();
     }
 
     return new DummyNativeAdapter();
