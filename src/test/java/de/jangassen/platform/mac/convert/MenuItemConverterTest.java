@@ -1,5 +1,6 @@
 package de.jangassen.platform.mac.convert;
 
+import de.jangassen.jfa.appkit.NSEventModifierFlags;
 import de.jangassen.jfa.appkit.NSMenuItem;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.KeyCode;
@@ -37,7 +38,8 @@ class MenuItemConverterTest {
 
     NSMenuItem nsMenuItem = MenuItemConverter.convert(item);
 
-    Assertions.assertEquals("alt+q", nsMenuItem.keyEquivalent());
+    Assertions.assertEquals("q", nsMenuItem.keyEquivalent());
+    Assertions.assertEquals(NSEventModifierFlags.NSEventModifierFlagOption, nsMenuItem.keyEquivalentModifierMask());
   }
 
   @Test
@@ -84,7 +86,8 @@ class MenuItemConverterTest {
     NSMenuItem nsMenuItem = MenuItemConverter.convert(item);
 
     item.setAccelerator(new KeyCodeCombination(KeyCode.Q, KeyCombination.ALT_DOWN));
-    Assertions.assertEquals("alt+q", nsMenuItem.keyEquivalent());
+    Assertions.assertEquals("q", nsMenuItem.keyEquivalent());
+    Assertions.assertEquals(NSEventModifierFlags.NSEventModifierFlagOption, nsMenuItem.keyEquivalentModifierMask());
   }
 
 }

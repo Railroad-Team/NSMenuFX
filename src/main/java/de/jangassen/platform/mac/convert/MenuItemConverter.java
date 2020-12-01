@@ -3,12 +3,14 @@ package de.jangassen.platform.mac.convert;
 import de.jangassen.jfa.FoundationCallback;
 import de.jangassen.jfa.FoundationCallbackRegistry;
 import de.jangassen.jfa.ObjcToJava;
+import de.jangassen.jfa.appkit.NSEventModifierFlags;
 import de.jangassen.jfa.appkit.NSMenuItem;
 import de.jangassen.jfa.cleanup.NSCleaner;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SeparatorMenuItem;
+import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 
 import java.util.Optional;
@@ -48,6 +50,11 @@ public class MenuItemConverter {
 
     menuItem.acceleratorProperty().addListener((observable, oldValue, newValue) ->
             nsMenuItem.setKeyEquivalent(toKeyEquivalentString(newValue))
+    );
+
+    nsMenuItem.setKeyEquivalentModifierMask(toKeyEventModifierFlags(menuItem.getAccelerator()));
+    menuItem.acceleratorProperty().addListener((observable, oldValue, newValue) ->
+            nsMenuItem.setKeyEquivalentModifierMask(toKeyEventModifierFlags(newValue))
     );
 
     ImageConverter.convert(menuItem.getGraphic()).ifPresent(nsMenuItem::setImage);
@@ -97,13 +104,33 @@ public class MenuItemConverter {
   }
 
   private static String keyEquivalent(KeyCombination accelerator) {
-    String keyEquivalentString = accelerator.getName().replace("Meta", "");
-    if (accelerator.getShift() != KeyCombination.ModifierValue.DOWN) {
-      keyEquivalentString = keyEquivalentString.toLowerCase();
+    if (accelerator instanceof KeyCodeCombination) {
+      return ((KeyCodeCombination) accelerator).getCode().getChar().toLowerCase();
     }
-    if (keyEquivalentString.startsWith("+")) {
-      keyEquivalentString = keyEquivalentString.substring(1);
+
+    return "";
+  }
+
+  private static int toKeyEventModifierFlags(KeyCombination accelerator) {
+    int modifiers = 0;
+
+    if (accelerator == null) {
+      return modifiers;
     }
-    return keyEquivalentString;
+
+    if (accelerator.getShift() == KeyCombination.ModifierValue.DOWN) {
+      modifiers |= NSEventModifierFlags.NSEventModifierFlagShift;
+    }
+    if (accelerator.getAlt() == KeyCombination.ModifierValue.DOWN) {
+      modifiers |= NSEventModifierFlags.NSEventModifierFlagOption;
+    }
+    if (accelerator.getMeta() == KeyCombination.ModifierValue.DOWN) {
+      modifiers |= NSEventModifierFlags.NSEventModifierFlagCommand;
+    }
+    if (accelerator.getControl() == KeyCombination.ModifierValue.DOWN) {
+      modifiers |= NSEventModifierFlags.NSEventModifierFlagControl;
+    }
+
+    return modifiers;
   }
 }

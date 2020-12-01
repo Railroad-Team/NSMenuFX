@@ -8,6 +8,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
@@ -56,6 +58,7 @@ public class StandardMacApp extends Application {
     // Runtime
     MenuItem aboutItem = tk.createAboutMenuItem(appName);
     MenuItem prefsItem = new MenuItem("Preferences...");
+    prefsItem.setAccelerator(new KeyCodeCombination(KeyCode.COMMA, KeyCodeCombination.META_DOWN));
     prefsItem.setOnAction(this::handleEvent);
     appMenu.getItems().addAll(aboutItem, new SeparatorMenuItem(), prefsItem, new SeparatorMenuItem(),
             tk.createHideMenuItem(appName), tk.createHideOthersMenuItem(), tk.createUnhideAllMenuItem(),
