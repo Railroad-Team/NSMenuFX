@@ -118,14 +118,14 @@ Add the following lines to the dependencies in your `pom.xml`
 <dependency>
     <groupId>de.jangassen</groupId>
     <artifactId>nsmenufx</artifactId>
-    <version>3.0.0</version>
+    <version>3.0.1</version>
 </dependency>
 ```
 ## Gradle
 
 Add the following line to the dependencies in your `build.gradle`
 
-	compile "de.jangassen:nsmenufx:3.0.0"
+	compile "de.jangassen:nsmenufx:3.0.1"
 
 ## Migrating from 2.1
 
