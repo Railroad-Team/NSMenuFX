@@ -33,15 +33,34 @@ public class FirstWindowShowingEventListener implements ListChangeListener<Windo
   }
 
   private void watchWindows(List<? extends Window> windows) {
-    windows.forEach(added -> added.showingProperty().addListener(new ChangeListener<>() {
-      @Override
-      public void changed(ObservableValue<? extends Boolean> observableValue, Boolean oldValue, Boolean newValue) {
-        Optional.ofNullable(action).ifPresent(Runnable::run);
-        completed = true;
-
-        added.showingProperty().removeListener(this);
-        Window.getWindows().removeListener(FirstWindowShowingEventListener.this);
+    windows.forEach(added -> {
+      WindowShowingListener changeListener = new WindowShowingListener(added);
+      if (added.isShowing()) {
+        changeListener.handleWindowShowing();
+      } else {
+        added.showingProperty().addListener(changeListener);
       }
-    }));
+    });
+  }
+
+  private class WindowShowingListener implements ChangeListener<Boolean> {
+    private final Window added;
+
+    public WindowShowingListener(Window added) {
+      this.added = added;
+    }
+
+    @Override
+    public void changed(ObservableValue<? extends Boolean> observableValue, Boolean oldValue, Boolean newValue) {
+      handleWindowShowing();
+    }
+
+    public void handleWindowShowing() {
+      Optional.ofNullable(action).ifPresent(Runnable::run);
+      completed = true;
+
+      added.showingProperty().removeListener(this);
+      Window.getWindows().removeListener(FirstWindowShowingEventListener.this);
+    }
   }
 }
