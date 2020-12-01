@@ -126,6 +126,12 @@ public class AboutStageBuilder {
     return this;
   }
 
+  public AboutStageBuilder withNode(Node node) {
+    setCredits(node);
+
+    return this;
+  }
+
   private void setCredits(Node view) {
     BorderPane pane = new BorderPane();
     pane.setCenter(view);
