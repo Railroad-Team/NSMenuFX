@@ -19,7 +19,7 @@ import java.net.URL;
  * "OS X Human Interface Guidelines"
  */
 public class StandardMacApp extends Application {
-  static final String appName = "Standard";
+  static final String appName = "My macOS App";
   static final String mainWindowTitle = "Main";
   static final String childWindowTitle = "Child";
 
@@ -56,6 +56,7 @@ public class StandardMacApp extends Application {
     // Runtime
     MenuItem aboutItem = tk.createAboutMenuItem(appName);
     MenuItem prefsItem = new MenuItem("Preferences...");
+    prefsItem.setOnAction(this::handleEvent);
     appMenu.getItems().addAll(aboutItem, new SeparatorMenuItem(), prefsItem, new SeparatorMenuItem(),
             tk.createHideMenuItem(appName), tk.createHideOthersMenuItem(), tk.createUnhideAllMenuItem(),
             new SeparatorMenuItem(), tk.createQuitMenuItem(appName));
@@ -68,7 +69,8 @@ public class StandardMacApp extends Application {
 
     // Edit
     Menu editMenu = new Menu("Edit");
-    editMenu.getItems().addAll(new MenuItem("TBD"));
+    editMenu.getItems().addAll(createMenuItem("Undo"), createMenuItem("Redo"), new SeparatorMenuItem(),
+            createMenuItem("Cut"), createMenuItem("Copy"), createMenuItem("Paste"), createMenuItem("Select All"));
 
     // Format
     Menu formatMenu = new Menu("Format");
@@ -86,7 +88,7 @@ public class StandardMacApp extends Application {
 
     // Help Menu
     Menu helpMenu = new Menu("Help");
-    helpMenu.getItems().addAll(new MenuItem("TBD"));
+    helpMenu.getItems().addAll(new MenuItem("Getting started"));
 
     bar.getMenus().addAll(appMenu, fileMenu, editMenu, formatMenu, viewMenu, windowMenu, helpMenu);
 
@@ -95,8 +97,12 @@ public class StandardMacApp extends Application {
     tk.autoAddWindowMenuItems(windowMenu);
     tk.setGlobalMenuBar(bar);
     tk.setTrayMenu(createSampleMenu());
+  }
 
-    System.gc();
+  private MenuItem createMenuItem(String title) {
+    MenuItem menuItem = new MenuItem(title);
+    menuItem.setOnAction(this::handleEvent);
+    return menuItem;
   }
 
   private StackPane getRootPane() {
