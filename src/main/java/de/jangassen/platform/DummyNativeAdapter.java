@@ -8,6 +8,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 
+import java.util.List;
+
 public class DummyNativeAdapter implements NativeAdapter {
 
   @Override
@@ -59,6 +61,11 @@ public class DummyNativeAdapter implements NativeAdapter {
   @Override
   public boolean systemUsesDarkMode() {
     return false;
+  }
+
+  @Override
+  public void setMenuBar(List<Menu> menus) {
+    // Only supported on macOS
   }
 
   @Override

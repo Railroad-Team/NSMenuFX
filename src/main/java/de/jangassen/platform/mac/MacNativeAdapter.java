@@ -16,6 +16,7 @@ import javafx.application.Platform;
 import javafx.scene.control.Menu;
 import javafx.scene.input.MouseEvent;
 
+import java.util.List;
 import java.util.Optional;
 
 public class MacNativeAdapter implements NativeAdapter {
@@ -51,6 +52,22 @@ public class MacNativeAdapter implements NativeAdapter {
 
   public static boolean isAvailable() {
     return Foundation.isAvailable();
+  }
+
+  public void setMenuBar(List<Menu> menus) {
+    NSMenu menu = NSMenu.alloc().init();
+    menus.stream().map(this::getMenuBarItem).forEach(menu::addItem);
+
+    NSApplication.sharedApplication().setMainMenu(menu);
+  }
+
+  private NSMenuItem getMenuBarItem(Menu menu) {
+    NSMenu nsMenu = MenuConverter.convert(menu);
+    NSMenuItem wrapperItem = NSMenuItem.alloc().init();
+    wrapperItem.setSubmenu(nsMenu);
+
+    NSCleaner.register(menu, wrapperItem);
+    return wrapperItem;
   }
 
   public void setApplicationMenu(Menu menu) {

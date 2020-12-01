@@ -181,7 +181,12 @@ public class MenuToolkit {
   }
 
   public void setMenuBar(MenuBar menuBar) {
-    StageUtils.getStages().forEach(stage -> setMenuBar(stage, menuBar));
+    if (StageUtils.getStages().isEmpty()) {
+      // TODO: As soon as a stage becomes visible, need to set this again
+      nativeAdapter.setMenuBar(menuBar.getMenus());
+    } else {
+      StageUtils.getStages().forEach(stage -> setMenuBar(stage, menuBar));
+    }
   }
 
   public void setMenuBar(Stage stage, MenuBar menuBar) {

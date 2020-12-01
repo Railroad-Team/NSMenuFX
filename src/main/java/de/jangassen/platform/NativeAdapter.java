@@ -4,7 +4,11 @@ import de.jangassen.model.AppearanceMode;
 import javafx.scene.control.Menu;
 import javafx.scene.input.MouseEvent;
 
+import java.util.List;
+
 public interface NativeAdapter {
+  void setMenuBar(List<Menu> menus);
+
   void setApplicationMenu(Menu menu);
 
   void setDocIconMenu(Menu menu);
