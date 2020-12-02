@@ -40,7 +40,6 @@ public class SampleMenuBar extends Application {
     bar.getMenus().addAll(menu1, menu3);
 
     tk.setMenuBar(primaryStage, bar);
-
   }
 
   public static void main(String[] args) {

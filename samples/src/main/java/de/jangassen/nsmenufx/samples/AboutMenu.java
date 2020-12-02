@@ -29,7 +29,6 @@ public class AboutMenu extends Application {
         .withVersionString("Version 1.0b").withCopyright("Copyright \u00A9 " + Calendar
             .getInstance().get(Calendar.YEAR));
 
-
     try {
       IcnsParser parser = IcnsParser.forFile(AboutStageBuilder.DEFAULT_APP_ICON);
       aboutStageBuilder = aboutStageBuilder.withImage(new Image(parser.getIconStream(IcnsType.ic08)));

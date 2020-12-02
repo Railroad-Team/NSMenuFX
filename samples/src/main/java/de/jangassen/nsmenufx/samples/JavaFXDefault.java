@@ -34,6 +34,5 @@ public class JavaFXDefault extends Application {
 		primaryStage.setScene(new Scene(new Pane(menuBar)));
 		primaryStage.setTitle("Test");
 		primaryStage.show();
-
 	}
 }
