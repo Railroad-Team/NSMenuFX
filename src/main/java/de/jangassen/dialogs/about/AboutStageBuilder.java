@@ -126,6 +126,7 @@ public class AboutStageBuilder {
     return this;
   }
 
+  @SuppressWarnings("unused")
   public AboutStageBuilder withNode(Node node) {
     setCredits(node);
 

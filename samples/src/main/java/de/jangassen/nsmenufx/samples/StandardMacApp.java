@@ -101,6 +101,9 @@ public class StandardMacApp extends Application {
     tk.autoAddWindowMenuItems(windowMenu);
     tk.setGlobalMenuBar(bar);
     tk.setTrayMenu(createSampleMenu());
+
+    System.gc();
+    System.runFinalization();
   }
 
   private MenuItem createMenuItem(String title) {

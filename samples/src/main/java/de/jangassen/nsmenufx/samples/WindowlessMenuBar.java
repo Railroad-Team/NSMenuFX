@@ -36,5 +36,6 @@ public class WindowlessMenuBar extends Application {
     MenuBar bar = new MenuBar();
     bar.getMenus().addAll(applicationMenu, menu1, menu2);
     tk.setMenuBar(bar);
+    //tk.setGlobalMenuBar(bar);
   }
 }

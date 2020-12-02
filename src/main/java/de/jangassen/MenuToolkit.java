@@ -164,6 +164,7 @@ public class MenuToolkit {
     nativeAdapter.showContextMenu(menu, event);
   }
 
+  @SuppressWarnings("unused")
   public boolean systemUsesDarkMode() {
     return nativeAdapter.systemUsesDarkMode();
   }
@@ -177,6 +178,7 @@ public class MenuToolkit {
     MenuBarSyncListener.register(menuBar);
   }
 
+  @SuppressWarnings("unused")
   public void unsetGlobalMenuBar() {
     MenuBarSyncListener.unregister();
   }
@@ -211,6 +213,7 @@ public class MenuToolkit {
     StageUtils.getStages().addListener(new WindowMenuUpdateListener(menu));
   }
 
+  @SuppressWarnings("unused")
   public void setForceQuitOnCmdQ(boolean forceQuit) {
     nativeAdapter.setForceQuitOnCmdQ(forceQuit);
   }

@@ -37,6 +37,7 @@ public class IcnsParser {
     }
   }
 
+  @SuppressWarnings("unused")
   public boolean hasIconType(IcnsType iconType) {
     return iconMap.containsKey(iconType.getOsType());
   }
@@ -52,6 +53,7 @@ public class IcnsParser {
   private InputStream createIconInputStream(String osType) throws IOException {
     IcnsIcon icon = iconMap.get(osType);
     InputStream iconData = new FileInputStream(icnsFile);
+    //noinspection ResultOfMethodCallIgnored
     iconData.skip(icon.offset);
     return new IcnsInputStream(iconData, icon.length);
   }
@@ -80,11 +82,12 @@ public class IcnsParser {
 
   private IcnsIcon readNextIcon(DataInputStream stream) throws IOException {
     byte[] type = new byte[4];
+    //noinspection ResultOfMethodCallIgnored
     stream.read(type);
-    int length = stream.readInt();
+    int skipLength = stream.readInt();
 
-    stream.skipBytes(length - HEADER_SIZE);
+    stream.skipBytes(skipLength - HEADER_SIZE);
 
-    return new IcnsIcon(new String(type), offset + HEADER_SIZE, length);
+    return new IcnsIcon(new String(type), offset + HEADER_SIZE, skipLength);
   }
 }

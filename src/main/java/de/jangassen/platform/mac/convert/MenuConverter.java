@@ -56,10 +56,10 @@ public class MenuConverter {
     while (change.next()) {
       if (change.wasPermutated()) {
         for (int i = change.getFrom(); i < change.getTo(); ++i) {
-          //permutate
+          // TODO: Permutate
         }
       } else if (change.wasUpdated()) {
-        //update item
+        // TODO: Update item
       } else {
         change.getRemoved().forEach(item -> MenuConverter.removeMenuItem(nsMenu, fxToNsMenuItems, item));
         change.getAddedSubList().forEach(item -> MenuConverter.addMenuItem(nsMenu, fxToNsMenuItems, item));

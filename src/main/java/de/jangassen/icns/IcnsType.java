@@ -1,5 +1,6 @@
 package de.jangassen.icns;
 
+@SuppressWarnings("unused")
 public enum IcnsType {
   ICON("ICON"),
   ICN("ICN#"),
