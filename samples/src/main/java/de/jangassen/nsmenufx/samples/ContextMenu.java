@@ -15,7 +15,7 @@ public class ContextMenu extends Application {
     MenuToolkit toolkit = MenuToolkit.toolkit();
     Menu context = new Menu();
     MenuItem menuItem = new MenuItem("Item1");
-    menuItem.setOnAction(e -> System.out.println("Clicked"));
+    menuItem.setOnAction(e -> System.out.println("Clicked")); // NOSONAR
 
     Menu subMenu = new Menu("Submenu");
     subMenu.getItems().add(new MenuItem("Item 2"));

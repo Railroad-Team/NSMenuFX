@@ -25,7 +25,7 @@ public class SampleMenuBar extends Application {
     MenuItem item1 = new MenuItem("Item1");
     MenuItem item2 = new MenuItem("Item2");
     MenuItem item3 = new MenuItem("Item3");
-    item3.setOnAction(event -> System.out.println("Item3 clicked"));
+    item3.setOnAction(event -> System.out.println("Item3 clicked")); // NOSONAR
 
     MenuItem item4 = tk.createQuitMenuItem("my app");
 

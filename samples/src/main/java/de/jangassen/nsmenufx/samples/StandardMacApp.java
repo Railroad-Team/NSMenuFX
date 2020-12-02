@@ -10,6 +10,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
@@ -59,7 +60,7 @@ public class StandardMacApp extends Application {
     // Runtime
     MenuItem aboutItem = tk.createAboutMenuItem(APP_NAME);
     MenuItem prefsItem = new MenuItem("Preferences...");
-    prefsItem.setAccelerator(new KeyCodeCombination(KeyCode.COMMA, KeyCodeCombination.META_DOWN));
+    prefsItem.setAccelerator(new KeyCodeCombination(KeyCode.COMMA, KeyCombination.META_DOWN));
     prefsItem.setOnAction(this::handleEvent);
     appMenu.getItems().addAll(aboutItem, new SeparatorMenuItem(), prefsItem, new SeparatorMenuItem(),
             tk.createHideMenuItem(APP_NAME), tk.createHideOthersMenuItem(), tk.createUnhideAllMenuItem(),
@@ -147,7 +148,7 @@ public class StandardMacApp extends Application {
   }
 
   private void handleEvent(ActionEvent actionEvent) {
-    System.out.println("clicked " + actionEvent.getSource());
+    System.out.println("clicked " + actionEvent.getSource());  // NOSONAR
   }
 
   private static void createNewStage() {
