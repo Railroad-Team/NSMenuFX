@@ -10,7 +10,7 @@ import javafx.stage.Stage;
 public class RenameMenuItem extends Application {
 
 	@Override
-	public void start(Stage primaryStage) throws Exception {
+	public void start(Stage primaryStage) {
 		StackPane root = new StackPane();
 		primaryStage.setScene(new Scene(root, 300, 250));
 		primaryStage.requestFocus();

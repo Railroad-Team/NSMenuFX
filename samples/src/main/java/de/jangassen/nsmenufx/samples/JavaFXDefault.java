@@ -17,7 +17,7 @@ public class JavaFXDefault extends Application {
 	}
 
 	@Override
-	public void start(Stage primaryStage) throws Exception {
+	public void start(Stage primaryStage) {
 		MenuToolkit tk = MenuToolkit.toolkit(Locale.getDefault());
 		tk.setApplicationMenu(tk.createDefaultApplicationMenu("test"));
 

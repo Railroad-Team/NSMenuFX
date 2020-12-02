@@ -11,7 +11,7 @@ import javafx.stage.Stage;
 
 public class ContextMenu extends Application {
   @Override
-  public void start(Stage stage) throws Exception {
+  public void start(Stage stage) {
     MenuToolkit toolkit = MenuToolkit.toolkit();
     Menu context = new Menu();
     MenuItem menuItem = new MenuItem("Item1");

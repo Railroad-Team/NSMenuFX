@@ -24,6 +24,7 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 
 import java.io.IOException;
 import java.util.Calendar;
@@ -181,11 +182,15 @@ public class MenuToolkit {
   }
 
   public void setMenuBar(MenuBar menuBar) {
-    if (StageUtils.getStages().isEmpty()) {
-      setApplicationMenu(extractApplicationMenu(menuBar));
+    if (Window.getWindows().isEmpty()) {
       nativeAdapter.setMenuBar(menuBar.getMenus());
     } else {
-      StageUtils.getStages().forEach(stage -> setMenuBar(stage, menuBar));
+      setApplicationMenu(extractApplicationMenu(menuBar));
+
+      Window.getWindows().stream()
+              .filter(Stage.class::isInstance)
+              .map(Stage.class::cast)
+              .forEach(stage -> MenuBarUtils.setMenuBar(stage, menuBar));
     }
   }
 

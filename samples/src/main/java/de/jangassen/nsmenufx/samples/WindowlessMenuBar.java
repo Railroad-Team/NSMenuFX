@@ -2,15 +2,19 @@ package de.jangassen.nsmenufx.samples;
 
 import de.jangassen.MenuToolkit;
 import javafx.application.Application;
+import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 public class WindowlessMenuBar extends Application {
 
   @Override
   public void start(Stage primaryStage) {
+    primaryStage.setScene(new Scene(new StackPane()));
+
     MenuToolkit tk = MenuToolkit.toolkit();
 
     Menu applicationMenu = tk.createDefaultApplicationMenu("MyApp");

@@ -8,11 +8,11 @@ import javafx.stage.Stage;
 
 public class MenuBarSyncListener implements ListChangeListener<Stage> {
 
-	private static MenuBar MENU_BAR;
+	private static MenuBar menuBar;
 	private static MenuBarSyncListener instance = null;
 
 	public static void register(MenuBar menuBar) {
-		MENU_BAR = menuBar;
+		MenuBarSyncListener.menuBar = menuBar;
 
 		if (instance == null) {
 			instance = new MenuBarSyncListener();
@@ -33,7 +33,7 @@ public class MenuBarSyncListener implements ListChangeListener<Stage> {
 	@Override
 	public void onChanged(ListChangeListener.Change<? extends Stage> stageChanges) {
 		while (stageChanges.next()) {
-			stageChanges.getAddedSubList().forEach(stage -> MenuBarUtils.setMenuBar(stage, MENU_BAR));
+			stageChanges.getAddedSubList().forEach(stage -> MenuBarUtils.setMenuBar(stage, menuBar));
 		}
 	}
 

@@ -15,25 +15,26 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 import java.net.URL;
+import java.util.Objects;
 
 /**
  * Skeleton for Standard Macintosh Application See:
  * "OS X Human Interface Guidelines"
  */
 public class StandardMacApp extends Application {
-  static final String appName = "My macOS App";
-  static final String mainWindowTitle = "Main";
-  static final String childWindowTitle = "Child";
+  private static final String APP_NAME = "My macOS App";
+  private static final String MAIN_WINDOW_TITLE = "Main";
+  private static final String CHILD_WINDOW_TITLE = "Child";
 
-  private final URL menuIcon = StandardMacApp.class.getClassLoader().getResource("baseline_menu_white_18dp.png");
-  private final URL printIcon = StandardMacApp.class.getClassLoader().getResource("baseline_print_white_18dp.png");
-  private final URL refreshIcon = StandardMacApp.class.getClassLoader().getResource("baseline_refresh_white_18dp.png");
-  private final URL openIcon = StandardMacApp.class.getClassLoader().getResource("baseline_open_in_new_white_18dp.png");
+  private final URL menuIcon = Objects.requireNonNull(StandardMacApp.class.getClassLoader().getResource("baseline_menu_white_18dp.png"));
+  private final URL printIcon = Objects.requireNonNull(StandardMacApp.class.getClassLoader().getResource("baseline_print_white_18dp.png"));
+  private final URL refreshIcon = Objects.requireNonNull(StandardMacApp.class.getClassLoader().getResource("baseline_refresh_white_18dp.png"));
+  private final URL openIcon = Objects.requireNonNull(StandardMacApp.class.getClassLoader().getResource("baseline_open_in_new_white_18dp.png"));
 
-  static long counter = 1;
+  private static long counter = 1;
 
   @Override
-  public void start(Stage primaryStage) throws Exception {
+  public void start(Stage primaryStage) {
     MenuToolkit tk = MenuToolkit.toolkit();
 
     Scene scene = new Scene(getRootPane(), 300, 200);
@@ -48,21 +49,21 @@ public class StandardMacApp extends Application {
 
     primaryStage.setScene(scene);
     primaryStage.requestFocus();
-    primaryStage.setTitle(mainWindowTitle);
+    primaryStage.setTitle(MAIN_WINDOW_TITLE);
     primaryStage.show();
 
     MenuBar bar = new MenuBar();
 
     // Application Menu
-    Menu appMenu = new Menu(appName); // Name for appMenu can't be set at
+    Menu appMenu = new Menu(APP_NAME); // Name for appMenu can't be set at
     // Runtime
-    MenuItem aboutItem = tk.createAboutMenuItem(appName);
+    MenuItem aboutItem = tk.createAboutMenuItem(APP_NAME);
     MenuItem prefsItem = new MenuItem("Preferences...");
     prefsItem.setAccelerator(new KeyCodeCombination(KeyCode.COMMA, KeyCodeCombination.META_DOWN));
     prefsItem.setOnAction(this::handleEvent);
     appMenu.getItems().addAll(aboutItem, new SeparatorMenuItem(), prefsItem, new SeparatorMenuItem(),
-            tk.createHideMenuItem(appName), tk.createHideOthersMenuItem(), tk.createUnhideAllMenuItem(),
-            new SeparatorMenuItem(), tk.createQuitMenuItem(appName));
+            tk.createHideMenuItem(APP_NAME), tk.createHideOthersMenuItem(), tk.createUnhideAllMenuItem(),
+            new SeparatorMenuItem(), tk.createQuitMenuItem(APP_NAME));
 
     // File Menu
     Menu fileMenu = new Menu("File");
@@ -121,7 +122,7 @@ public class StandardMacApp extends Application {
     Menu dockMenu = createSampleMenu();
     MenuItem open = new MenuItem("New Window");
     open.setGraphic(new ImageView(new Image(openIcon.toString())));
-    open.setOnAction(e -> this.createNewStage());
+    open.setOnAction(e -> createNewStage());
     dockMenu.getItems().addAll(new SeparatorMenuItem(), open);
     return dockMenu;
   }
@@ -149,10 +150,10 @@ public class StandardMacApp extends Application {
     System.out.println("clicked " + actionEvent.getSource());
   }
 
-  private void createNewStage() {
+  private static void createNewStage() {
     Stage stage = new Stage();
     stage.setScene(new Scene(new StackPane()));
-    stage.setTitle(childWindowTitle + " " + (counter++));
+    stage.setTitle(CHILD_WINDOW_TITLE + " " + (counter++));
     stage.show();
   }
 
