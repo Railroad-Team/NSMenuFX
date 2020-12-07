@@ -152,8 +152,8 @@ public class MenuToolkit {
     nativeAdapter.setApplicationMenu(menu);
   }
 
-  public void setDocIconMenu(Menu menu) {
-    nativeAdapter.setDocIconMenu(menu);
+  public void setDockIconMenu(Menu menu) {
+    nativeAdapter.setDockIconMenu(menu);
   }
 
   public void setTrayMenu(Menu menu) {

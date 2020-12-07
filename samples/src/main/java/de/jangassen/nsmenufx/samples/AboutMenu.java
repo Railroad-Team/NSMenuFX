@@ -45,6 +45,6 @@ public class AboutMenu extends Application {
     Menu menu = new Menu("test");
     MenuItem myItem = new MenuItem("Hallo welt");
     menu.getItems().add(myItem);
-    tk.setDocIconMenu(menu);
+    tk.setDockIconMenu(menu);
   }
 }

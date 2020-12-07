@@ -1,7 +1,8 @@
 package de.jangassen.platform.mac;
 
-import de.jangassen.jfa.JavaToObjc;
-import de.jangassen.jfa.ObjcToJava;
+import com.sun.jna.Pointer;
+import com.sun.jna.ptr.PointerByReference;
+import de.jangassen.jfa.*;
 import de.jangassen.jfa.appkit.*;
 import de.jangassen.jfa.cleanup.NSCleaner;
 import de.jangassen.jfa.foundation.Foundation;
@@ -31,8 +32,9 @@ public class MacNativeAdapter implements NativeAdapter {
   private final NSWorkspace sharedWorkspace;
 
   private NSStatusItem nsStatusItem;
-  private ApplicationDelegateWithMenu applicationDelegate;
+  private FoundationProxy applicationDelegate;
   private Menu applicationMenu;
+  private NSMenu dockIconMenu;
 
   private MacNativeAdapter() {
     sharedApplication = NSApplication.sharedApplication();
@@ -153,16 +155,36 @@ public class MacNativeAdapter implements NativeAdapter {
     });
   }
 
-  public void setDocIconMenu(Menu menu) {
+  public void setDockIconMenu(Menu menu) {
     if (applicationDelegate == null) {
-      applicationDelegate = new ApplicationDelegateWithMenu(sharedApplication.delegate());
+      this.applicationDelegate = createApplicationDelegate();
 
-      ID mappedObject = JavaToObjc.map(applicationDelegate);
+      ID mappedObject = JavaToObjc.map(this.applicationDelegate);
       sharedApplication.setDelegate(ObjcToJava.map(mappedObject, NSApplicationDelegate.class));
     }
 
-    NSMenu nsMenu = MenuConverter.convert(menu);
-    applicationDelegate.setMenu(nsMenu);
+    if (this.dockIconMenu != null) {
+      Foundation.cfRelease(ObjcToJava.toID(dockIconMenu));
+    }
+
+    dockIconMenu = MenuConverter.convert(menu);
+
+    if (menu != null) {
+      Foundation.cfRetain(ObjcToJava.toID(dockIconMenu));
+    }
+  }
+
+  private FoundationProxy createApplicationDelegate() {
+    FoundationProxyHandler proxyHandler = new FoundationProxyHandler();
+    NamedType namedType = new NamedType(NSApplication.class, null);
+    proxyHandler.addMethod(new FoundationMethod(this::getNsInvocationConsumer, "applicationDockMenu", NSMenu.class, namedType));
+
+    return new FoundationProxy(sharedApplication.delegate(), proxyHandler);
+  }
+
+  private void getNsInvocationConsumer(NSInvocation invocation) {
+    Pointer value = new Pointer(ObjcToJava.toID(dockIconMenu).longValue());
+    invocation.setReturnValue(new PointerByReference(value));
   }
 
   @Override

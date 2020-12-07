@@ -11,7 +11,7 @@ public interface NativeAdapter {
 
   void setApplicationMenu(Menu menu);
 
-  void setDocIconMenu(Menu menu);
+  void setDockIconMenu(Menu menu);
 
   void hide();
 

@@ -39,7 +39,7 @@ public class DummyNativeAdapter implements NativeAdapter {
   }
 
   @Override
-  public void setDocIconMenu(Menu menu) {
+  public void setDockIconMenu(Menu menu) {
     // Only supported on macOS
   }
 

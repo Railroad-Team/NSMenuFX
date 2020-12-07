@@ -98,7 +98,7 @@ public class StandardMacApp extends Application {
     bar.getMenus().addAll(appMenu, fileMenu, editMenu, formatMenu, viewMenu, windowMenu, helpMenu);
 
     tk.setAppearanceMode(AppearanceMode.AUTO);
-    tk.setDocIconMenu(createDockMenu());
+    tk.setDockIconMenu(createDockMenu());
     tk.autoAddWindowMenuItems(windowMenu);
     tk.setGlobalMenuBar(bar);
     tk.setTrayMenu(createSampleMenu());
