@@ -19,6 +19,7 @@ import javafx.stage.Window;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public class MacNativeAdapter implements NativeAdapter {
@@ -210,5 +211,14 @@ public class MacNativeAdapter implements NativeAdapter {
       default:
         throw new IllegalArgumentException();
     }
+  }
+
+  @Override
+  public void showAboutWindow(String title) {
+    NSDictionary<NSAboutPanelOptionKey, NSObject> options = NSDictionary.of(Map.of(
+            NSAboutPanelOptionKey.NSAboutPanelOptionApplicationName, NSString.of(title)
+    ));
+
+    sharedApplication.orderFrontStandardAboutPanelWithOptions(options);
   }
 }

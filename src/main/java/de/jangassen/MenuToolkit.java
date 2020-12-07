@@ -12,6 +12,8 @@ import de.jangassen.platform.NativeAdapter;
 import de.jangassen.platform.NativeAdapterProvider;
 import de.jangassen.util.MenuBarUtils;
 import de.jangassen.util.StageUtils;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Parent;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -67,6 +69,16 @@ public class MenuToolkit {
     return createAboutMenuItem(appName, createDefaultAboutStage(appName));
   }
 
+  public MenuItem createNativeAboutMenuItem(String appName) {
+    return createAboutMenuItem(appName, event -> nativeAdapter.showAboutWindow(appName));
+  }
+
+  public MenuItem createAboutMenuItem(String appName, EventHandler<ActionEvent> actionEventEventHandler) {
+    MenuItem about = new MenuItem(labelMaker.getLabel(LabelName.ABOUT, appName));
+    about.setOnAction(actionEventEventHandler);
+    return about;
+  }
+
   private Stage createDefaultAboutStage(String appName) {
     AboutStageBuilder stageBuilder = AboutStageBuilder.start(labelMaker.getLabel(LabelName.ABOUT, appName))
             .withAppName(appName).withCloseOnFocusLoss().withCopyright("Copyright \u00A9 " + Calendar
@@ -83,9 +95,7 @@ public class MenuToolkit {
   }
 
   public MenuItem createAboutMenuItem(String appName, Stage aboutStage) {
-    MenuItem about = new MenuItem(labelMaker.getLabel(LabelName.ABOUT, appName));
-    about.setOnAction(event -> aboutStage.show());
-    return about;
+    return createAboutMenuItem(appName, event -> aboutStage.show());
   }
 
   public MenuItem createQuitMenuItem(String appName) {

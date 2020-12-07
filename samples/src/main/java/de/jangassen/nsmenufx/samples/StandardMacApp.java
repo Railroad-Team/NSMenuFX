@@ -58,7 +58,7 @@ public class StandardMacApp extends Application {
     // Application Menu
     Menu appMenu = new Menu(APP_NAME); // Name for appMenu can't be set at
     // Runtime
-    MenuItem aboutItem = tk.createAboutMenuItem(APP_NAME);
+    MenuItem aboutItem = tk.createNativeAboutMenuItem(APP_NAME);
     MenuItem prefsItem = new MenuItem("Preferences...");
     prefsItem.setAccelerator(new KeyCodeCombination(KeyCode.COMMA, KeyCombination.META_DOWN));
     prefsItem.setOnAction(this::handleEvent);

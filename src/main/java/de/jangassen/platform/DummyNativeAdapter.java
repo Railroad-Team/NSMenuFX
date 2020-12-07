@@ -1,5 +1,6 @@
 package de.jangassen.platform;
 
+import de.jangassen.dialogs.about.AboutStageBuilder;
 import de.jangassen.model.AppearanceMode;
 import javafx.application.Platform;
 import javafx.scene.control.ContextMenu;
@@ -79,5 +80,10 @@ public class DummyNativeAdapter implements NativeAdapter {
       contextMenu.getItems().addAll(menu.getItems());
       contextMenu.show(window, event.getScreenX(), event.getScreenY());
     });
+  }
+
+  @Override
+  public void showAboutWindow(String title) {
+    AboutStageBuilder.start(title).build().show();
   }
 }
