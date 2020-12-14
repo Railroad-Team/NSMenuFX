@@ -1,5 +1,6 @@
 package de.jangassen;
 
+import de.jangassen.annotation.Beta;
 import de.jangassen.dialogs.about.AboutStageBuilder;
 import de.jangassen.icns.IcnsParser;
 import de.jangassen.icns.IcnsType;
@@ -69,6 +70,7 @@ public class MenuToolkit {
     return createAboutMenuItem(appName, createDefaultAboutStage(appName));
   }
 
+  @Beta
   public MenuItem createNativeAboutMenuItem(String appName) {
     return createAboutMenuItem(appName, event -> nativeAdapter.showAboutWindow(appName));
   }
