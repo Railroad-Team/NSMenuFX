@@ -1,10 +1,8 @@
 package de.jangassen.util;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
+import javafx.beans.binding.Bindings;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -14,13 +12,17 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
-public final class MenuBarUtils {
-	private MenuBarUtils() {}
+import java.util.stream.Collectors;
 
-	public static MenuBar createMenuBar(List<Menu> menus) {
+public final class MenuBarUtils {
+	private MenuBarUtils() {
+	}
+
+	public static MenuBar createMenuBar(ObservableList<Menu> menus) {
 		MenuBar bar = new MenuBar();
 		bar.setUseSystemMenuBar(true);
-		bar.getMenus().addAll(menus);
+
+		Bindings.bindContentBidirectional(bar.getMenus(), menus);
 		return bar;
 	}
 
@@ -61,10 +63,7 @@ public final class MenuBarUtils {
 		children.add(createMenuBar);
 	}
 
-	private static List<Menu> extractSubMenus(MenuBar bar) {
-		if (bar.getMenus().size() <= 1) {
-			return new ArrayList<>();
-		}
-		return bar.getMenus().subList(1, bar.getMenus().size());
+	private static ObservableList<Menu> extractSubMenus(MenuBar bar) {
+		return new FilteredList<>(bar.getMenus(), menu -> bar.getMenus().indexOf(menu) > 0);
 	}
 }
