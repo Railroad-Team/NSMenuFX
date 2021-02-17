@@ -35,13 +35,23 @@ public class MenuConverter {
   }
 
   private static void addMenuItem(NSMenu nsMenu, Map<MenuItem, NSMenuItem> fxToNsMenuItems, MenuItem menuItem) {
+    NSMenuItem nsMenuItem = getNsMenuItem(fxToNsMenuItems, menuItem);
+    nsMenu.addItem(nsMenuItem);
+  }
+
+  private static void addMenuItem(NSMenu nsMenu, Map<MenuItem, NSMenuItem> fxToNsMenuItems, MenuItem menuItem, int index) {
+    NSMenuItem nsMenuItem = getNsMenuItem(fxToNsMenuItems, menuItem);
+    nsMenu.insertItem(nsMenuItem, index);
+  }
+
+  private static NSMenuItem getNsMenuItem(Map<MenuItem, NSMenuItem> fxToNsMenuItems, MenuItem menuItem) {
     NSMenuItem nsMenuItem = MenuItemConverter.convert(menuItem);
     if (menuItem instanceof Menu) {
       nsMenuItem.setSubmenu(MenuConverter.convert((Menu) menuItem));
     }
 
     fxToNsMenuItems.put(menuItem, nsMenuItem);
-    nsMenu.addItem(nsMenuItem);
+    return nsMenuItem;
   }
 
   private static void removeMenuItem(NSMenu nsMenu, Map<MenuItem, NSMenuItem> fxToNsMenuItems, MenuItem menuItem) {
@@ -62,7 +72,12 @@ public class MenuConverter {
         // TODO: Update item
       } else {
         change.getRemoved().forEach(item -> MenuConverter.removeMenuItem(nsMenu, fxToNsMenuItems, item));
-        change.getAddedSubList().forEach(item -> MenuConverter.addMenuItem(nsMenu, fxToNsMenuItems, item));
+
+        int index = change.getFrom();
+        for (MenuItem menuItem : change.getAddedSubList()) {
+          MenuConverter.addMenuItem(nsMenu, fxToNsMenuItems, menuItem, index);
+          index++;
+        }
       }
     }
   }
