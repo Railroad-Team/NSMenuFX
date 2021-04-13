@@ -142,6 +142,11 @@ AboutStageBuilder.start("My App").withNode(webView).build();
 
 ## Known issues
 
+There is a known issue with OpenJFX that may cause the menu bar to be unresponsive after launch. You can find more
+details about this issue in the respective OpenJFX [bug ticket](https://bugs.openjdk.java.net/browse/JDK-8233678). A 
+[pull request](https://github.com/openjdk/jfx/pull/361) containing a fix has already been merged and should be available
+in OpenJFX 16+.
+
 NSMenuFX no longer supports changing the title of the application menu at
 runtime. This has always been a bit "hacky" as it is not really supported
 by macOS. As a result, the new name was no longer bold faced when it was
