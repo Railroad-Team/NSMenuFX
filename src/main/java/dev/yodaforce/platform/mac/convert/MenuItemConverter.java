@@ -130,6 +130,9 @@ public class MenuItemConverter {
     if (accelerator.getControl() == KeyCombination.ModifierValue.DOWN) {
       modifiers |= NSEventModifierFlags.NSEventModifierFlagControl;
     }
+    if (accelerator.getShortcut() == KeyCombination.ModifierValue.DOWN) {
+      modifiers |= NSEventModifierFlags.NSEventModifierFlagCommand;
+    }
 
     return modifiers;
   }
