@@ -13,8 +13,8 @@
 	<url>https://github.com/YodaForce157/NSMenuFX</url>
 	<developers>
 		<developer>
-			<id>jan.gassen</id>
-			<name>Jan Gassen</name>
+			<id>YodaForce157</id>
+			<name>YodaForce157</name>
 		</developer>
 	</developers>
 
@@ -62,7 +62,7 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>3.0.0-M5</version>
 				<configuration>
-					<argLine>--add-opens nsmenufx/de.jangassen.platform.mac.convert=ALL-UNNAMED</argLine>
+					<argLine>--add-opens nsmenufx/dev.yodaforce.platform.mac.convert=ALL-UNNAMED</argLine>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -93,31 +93,6 @@
 				</executions>
 				<configuration>
 					<source>11</source>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-gpg-plugin</artifactId>
-				<version>1.6</version>
-				<executions>
-					<execution>
-						<id>sign-artifacts</id>
-						<phase>verify</phase>
-						<goals>
-							<goal>sign</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.sonatype.plugins</groupId>
-				<artifactId>nexus-staging-maven-plugin</artifactId>
-				<version>1.6.8</version>
-				<extensions>true</extensions>
-				<configuration>
-					<serverId>ossrh</serverId>
-					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
-					<autoReleaseAfterClose>true</autoReleaseAfterClose>
 				</configuration>
 			</plugin>
 			<plugin>
