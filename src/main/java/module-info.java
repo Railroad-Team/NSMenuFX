@@ -6,11 +6,11 @@ module nsmenufx {
     requires com.sun.jna;
     requires jfa;
 
-    exports de.jangassen;
-    exports de.jangassen.labels;
-    exports de.jangassen.dialogs.about;
-    exports de.jangassen.icns;
-    exports de.jangassen.model;
+    exports dev.yodaforce;
+    exports dev.yodaforce.labels;
+    exports dev.yodaforce.dialogs.about;
+    exports dev.yodaforce.icns;
+    exports dev.yodaforce.model;
 
-    exports de.jangassen.platform.mac to jfa;
+    exports dev.yodaforce.platform.mac to jfa;
 }
