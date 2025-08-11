@@ -11,13 +11,31 @@ jobs:
       contents: read
       packages: write
     steps:
-      - uses: actions/checkout@v5
+      - name: Checkout code
+        uses: actions/checkout@v5
+
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
           java-version: 21
           distribution: 'temurin'
+
+      - name: Configure Maven Settings
+        run: |
+          mkdir -p ~/.m2
+          cat > ~/.m2/settings.xml <<EOF
+          <settings>
+            <servers>
+              <server>
+                <id>github</id>
+                <username>${GITHUB_ACTOR}</username>
+                <password>${GITHUB_TOKEN}</password>
+              </server>
+            </servers>
+          </settings>
+          EOF
+
       - name: Publish to GitHub Packages
-        run: mvn install -DskipTests -Dmaven.javadoc.skip=true -Dgpg.skip
+        run: mvn deploy -DskipTests -Dmaven.javadoc.skip=true -Dgpg.skip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
