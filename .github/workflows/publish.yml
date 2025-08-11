@@ -1,0 +1,23 @@
+name: Publish package to Github Packages
+on:
+  push:
+    tags:
+      - '*.*.*'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v5
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: 21
+          distribution: 'temurin'
+      - name: Publish to GitHub Packages
+        run: mvn install -DskipTests -Dmaven.javadoc.skip=true -Dgpg.skip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
