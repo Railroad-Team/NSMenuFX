@@ -1,12 +1,5 @@
 # NSMenuFX
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/61379f5f801c464fb8cf5488d7c9f0c3)](https://www.codacy.com/app/0x4a616e/NSMenuFX?utm_source=github.com&utm_medium=referral&utm_content=codecentric/NSMenuFX&utm_campaign=badger)
-[![Maven Central](https://img.shields.io/maven-central/v/de.jangassen/nsmenufx.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22de.jangassen%22%20AND%20a:%22nsmenufx%22)
-![Test](https://github.com/0x4a616e/NSMenuFX/workflows/Test/badge.svg)
-![CodeQL](https://github.com/0x4a616e/NSMenuFX/workflows/CodeQL/badge.svg)
-[![Known Vulnerabilities](https://snyk.io/test/github/0x4a616e/NSMenuFX/badge.svg?targetFile=pom.xml)](https://snyk.io/test/github/0x4a616e/NSMenuFX?targetFile=pom.xml)
-[![JFXCentral](https://img.shields.io/badge/Find_me_on-JFXCentral-blue?logo=googlechrome&logoColor=white)](https://www.jfx-central.com/libraries/nsmenufx)
-
 A simple library to customize the macOS menu bar to give your JavaFX app
 a more [native look and feel](https://developer.apple.com/library/mac/documentation/UserExperience/Conceptual/OSXHIGuidelines/MenuBarMenus.html).  
 
@@ -112,33 +105,39 @@ MenuToolkit.toolkit().setAppearanceMode(AppearanceMode.AUTO);
 * Quickly create an "About" menu
 * Automatically use the same menu bar for all stages
 
-To find more examples, check out the sample applications [here](https://github.com/0x4a616e/NSMenuFX/tree/master/samples/src/main/java/de/jangassen/nsmenufx/samples).
+To find more examples, check out the sample applications [here](https://github.com/Railroad-Team/NSMenuFX/tree/master/samples/src/main/java/de/jangassen/nsmenufx/samples).
 
 ## Maven
+
+Add the following lines to the repositories in your `pom.xml`
+```xml
+<repository>
+    <id>railroad</id>
+    <name>Railroad Repository</name>
+    <url>https://maven.railroadide.dev/releases</url>
+</repository>
+```
 
 Add the following lines to the dependencies in your `pom.xml`
 ```xml
 <dependency>
-    <groupId>de.jangassen</groupId>
+    <groupId>dev.railroadide</groupId>
     <artifactId>nsmenufx</artifactId>
-    <version>3.1.0</version>
+    <version>1.0.0</version>
 </dependency>
 ```
+
 ## Gradle
 
-Add the following line to the dependencies in your `build.gradle`
-
-	compile "de.jangassen:nsmenufx:3.1.0"
-
-## Migrating from 2.1
-
-For most parts, the API has not changed. The most prominent difference is that the package name has changed from `de.codecentric.centerdevice` to `de.jangassen` to match the new maven coordinates. Also, the About dialog no longer uses a `WebView`, so it can either display plain text or a list of `Text` objects. If you want to continue using a `WebView`, you have to create one and pass that to the `AboutStageBuilder`:
-
-```java
-WebView webView = new WebView();
-webView.getEngine().loadContet("<b>Credits</b>");
-
-AboutStageBuilder.start("My App").withNode(webView).build();
+Add the following lines in your `build.gradle`
+```groovy
+repositories {
+    maven { url "https://maven.railroadide.dev/releases" }
+}
+	
+dependencies {
+    implementation "dev.railroadide:nsmenufx:1.0.0"
+}
 ```
 
 ## Known issues
