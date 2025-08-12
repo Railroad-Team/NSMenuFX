@@ -1,7 +1,7 @@
 module nsmenufx_samples {
-  requires nsmenufx;
-  requires javafx.graphics;
-  requires javafx.controls;
+    requires nsmenufx;
+    requires javafx.graphics;
+    requires javafx.controls;
 
-  exports de.jangassen.nsmenufx.samples to javafx.graphics;
+    exports dev.railroadide.nsmenufx.samples to javafx.graphics;
 }

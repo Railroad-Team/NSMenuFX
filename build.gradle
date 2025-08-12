@@ -1,0 +1,61 @@
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+    id 'org.openjfx.javafxplugin' version '0.1.0'
+}
+
+group = 'dev.railroadide'
+version = '1.0.0'
+description = 'NSMenuFX'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(11)
+    }
+
+    withSourcesJar()
+}
+
+javafx {
+    version = "11.0.2"
+    modules = [ 'javafx.controls', 'javafx.fxml' ]
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    implementation "de.jangassen:jfa:1.2.0"
+
+    testImplementation platform("org.junit:junit-bom:5.10.2")
+    testImplementation "org.junit.jupiter:junit-jupiter"
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+publishing {
+    repositories {
+        mavenLocal()
+        maven {
+            url "https://maven.railroadide.dev/releases"
+            credentials {
+                username = System.getenv("RAILROAD_MAVEN_USERNAME")
+                password = System.getenv("RAILROAD_MAVEN_PASSWORD")
+            }
+        }
+    }
+
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+}
